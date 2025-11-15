@@ -1,5 +1,6 @@
 set(ENGINE_SRC
     Engine/Main.cpp
+    Engine/Engine.cpp
 )
 
 add_executable(MyEngine ${ENGINE_SRC})

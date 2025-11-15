@@ -95,3 +95,5 @@ external/
 vendor/
 deps/
 
+#docs
+docs/
