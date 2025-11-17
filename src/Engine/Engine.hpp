@@ -1,6 +1,8 @@
 #pragma once
 
 namespace Engine {
+    class Window;
+    
     class Engine {
     public:
         Engine();
@@ -37,6 +39,9 @@ namespace Engine {
         // Fixed timestep accumulator
         float m_Accumulator;
         static constexpr float FIXED_DELTA_TIME = 1.0f / 60.0f; // 60 Hz
+        
+        // Window subsystem
+        Window* m_Window;
     };
 }
 

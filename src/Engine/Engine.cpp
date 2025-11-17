@@ -1,4 +1,5 @@
 #include "Engine/Engine.hpp"
+#include "Platform/Window.hpp"
 #include <iostream>
 #include <chrono>
 
@@ -7,6 +8,7 @@ namespace Engine {
         : m_IsRunning(false)
         , m_IsInitialized(false)
         , m_Accumulator(0.0f)
+        , m_Window(nullptr)
     {
     }
     
@@ -24,8 +26,16 @@ namespace Engine {
         
         std::cout << "[ENGINE] Initializing...\n";
         
-        // TODO: Initialize subsystems here
-        // - Window subsystem
+        // Initialize Window subsystem
+        m_Window = new Window();
+        if (!m_Window->Initialize(1280, 720, "MyEngine")) {
+            std::cerr << "[ENGINE] Failed to initialize window.\n";
+            delete m_Window;
+            m_Window = nullptr;
+            return false;
+        }
+        
+        // TODO: Initialize other subsystems here
         // - Input subsystem
         // - Renderer subsystem
         // - Time subsystem
@@ -44,7 +54,14 @@ namespace Engine {
         
         std::cout << "[ENGINE] Shutting down...\n";
         
-        // TODO: Shutdown subsystems here
+        // Shutdown Window subsystem
+        if (m_Window) {
+            m_Window->Shutdown();
+            delete m_Window;
+            m_Window = nullptr;
+        }
+        
+        // TODO: Shutdown other subsystems here
         
         m_IsRunning = false;
         m_IsInitialized = false;
@@ -93,12 +110,19 @@ namespace Engine {
             // Render
             Render();
             
-            // TODO: Check window events, input, etc. to determine if we should stop
-            // For now, stop after a short test period (remove this once window system is added)
-            static int frameCount = 0;
-            frameCount++;
-            if (frameCount >= 60) { // Run for ~1 second at 60 FPS
-                Stop();
+            // Swap buffers (present frame)
+            if (m_Window) {
+                m_Window->SwapBuffers();
+            }
+            
+            // Poll window events (handles input, window close, etc.)
+            if (m_Window) {
+                m_Window->PollEvents();
+                
+                // Check if window should close
+                if (m_Window->ShouldClose()) {
+                    Stop();
+                }
             }
         }
         
