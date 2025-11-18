@@ -42,6 +42,17 @@ namespace Engine {
         
         // Window subsystem
         Window* m_Window;
+        
+        // OpenGL resources for triangle
+        unsigned int m_VAO;  // Vertex Array Object
+        unsigned int m_VBO;  // Vertex Buffer Object
+        unsigned int m_ShaderProgram;  // Shader program
+        
+        // Initialize triangle rendering
+        void InitTriangle();
+        
+        // Cleanup triangle resources
+        void CleanupTriangle();
     };
 }
 

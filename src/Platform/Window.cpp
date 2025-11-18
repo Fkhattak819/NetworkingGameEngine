@@ -59,6 +59,9 @@ namespace Engine {
         // Make context current
         glfwMakeContextCurrent(window);
         
+        // Enable VSync (limit to monitor refresh rate)
+        glfwSwapInterval(1);
+        
         m_WindowHandle = window;
         m_Width = width;
         m_Height = height;
